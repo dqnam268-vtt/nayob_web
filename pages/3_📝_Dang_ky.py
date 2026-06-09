@@ -23,34 +23,33 @@ st.markdown('<div class="instruction-text">Quý phụ huynh vui lòng điền đ
 # ==========================================
 # 2. NHÚNG GOOGLE FORM
 # ==========================================
-# THẦY DÁN LINK GOOGLE FORM VÀO ĐÂY (Lưu ý: Link gốc, không dùng link rút gọn bit.ly cho iframe)
 GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScXAAXLN-FXWc9n4888GLyMhqHp8TUMNhUGjkiG8AM1VnhUjw/viewform?usp=header"
 
-if GOOGLE_FORM_URL == "https://docs.google.com/forms/d/e/1FAIpQLScXAAXLN-FXWc9n4888GLyMhqHp8TUMNhUGjkiG8AM1VnhUjw/viewform?usp=header":
-    st.warning("⚠️ **Lưu ý dành cho Thầy Nam:** Thầy vui lòng mở file `3_📝_Dang_ky.py` và dán đường link Google Form của thầy vào biến `GOOGLE_FORM_URL` để biểu mẫu hiện ra nhé.")
-else:
-    # Nếu link chưa có tham số embedded=true, hệ thống sẽ tự thêm vào để form hiển thị đẹp hơn
-    if "?embedded=true" not in GOOGLE_FORM_URL:
-        if "?" in GOOGLE_FORM_URL:
-            GOOGLE_FORM_URL += "&embedded=true"
-        else:
-            GOOGLE_FORM_URL += "?embedded=true"
+# Tự động thêm tham số embedded=true để form hiển thị đẹp hơn
+if "?embedded=true" not in GOOGLE_FORM_URL and "&embedded=true" not in GOOGLE_FORM_URL:
+    if "?" in GOOGLE_FORM_URL:
+        GOOGLE_FORM_URL += "&embedded=true"
+    else:
+        GOOGLE_FORM_URL += "?embedded=true"
 
-    # Nhúng Iframe Google Form với chiều cao 800px để hiển thị đầy đủ
-    components.iframe(GOOGLE_FORM_URL, width=700, height=800, scrolling=True)
-    
-    # Nút dự phòng trong trường hợp trình duyệt điện thoại của phụ huynh chặn iFrame
-    st.markdown("---")
-    st.markdown("<div style='text-align: center; color: #64748b; font-size: 14px;'>Nếu biểu mẫu phía trên không tải được, Quý phụ huynh vui lòng bấm vào nút dưới đây:</div>", unsafe_allow_html=True)
-    
-    st.markdown(f"""
-        <div style="text-align: center; margin-top: 15px;">
-            <a href="{GOOGLE_FORM_URL.replace('?embedded=true', '')}" target="_blank" 
-               style="background-color: #005088; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
-               Mở Biểu Mẫu Trên Cửa Sổ Mới
-            </a>
-        </div>
-    """, unsafe_allow_html=True)
+# Nhúng Iframe Google Form với chiều cao 800px để hiển thị đầy đủ
+components.iframe(GOOGLE_FORM_URL, width=700, height=800, scrolling=True)
+
+# Nút dự phòng trong trường hợp trình duyệt điện thoại của phụ huynh chặn iFrame
+st.markdown("---")
+st.markdown("<div style='text-align: center; color: #64748b; font-size: 14px;'>Nếu biểu mẫu phía trên không tải được, Quý phụ huynh vui lòng bấm vào nút dưới đây:</div>", unsafe_allow_html=True)
+
+# Loại bỏ đuôi embedded khi mở ở cửa sổ mới
+clean_url = GOOGLE_FORM_URL.replace('&embedded=true', '').replace('?embedded=true', '')
+
+st.markdown(f"""
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="{clean_url}" target="_blank" 
+           style="background-color: #005088; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+           Mở Biểu Mẫu Trên Cửa Sổ Mới
+        </a>
+    </div>
+""", unsafe_allow_html=True)
 
 # ==========================================
 # 3. FOOTER

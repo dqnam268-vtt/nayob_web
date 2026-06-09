@@ -77,7 +77,7 @@ LƯU Ý KHI TRẢ LỜI: Trả lời ngắn gọn, súc tích, chia đoạn rõ 
 
 # Khởi tạo mô hình AI
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-flash-latest", # <-- Thêm chữ "-latest" vào đuôi
     system_instruction=KNOWLEDGE_BASE
 )
 
