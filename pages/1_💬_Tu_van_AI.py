@@ -20,21 +20,21 @@ st.markdown('<div class="subtitle-text">Tư vấn lộ trình học Toán 24/7 c
 st.markdown("---")
 
 # ==========================================
+# ==========================================
 # 2. XỬ LÝ API KEY (BẢO MẬT KHI ĐƯA LÊN MẠNG)
 # ==========================================
-# Khi test trên máy tính, thầy có thể dán trực tiếp API key vào chữ "DÁN_API_KEY_CỦA_THẦY_VÀO_ĐÂY".
-# Tuy nhiên, khi đưa lên mạng (Streamlit Cloud), thầy hãy dùng tính năng st.secrets của Streamlit để bảo mật.
-API_KEY = "AQ.Ab8RN6K4nRaymmRhIC84P_ZKhUKu0Ae4k0Ym_1G2Dac95jH9fg" 
+API_KEY = "" # Để trống hoàn toàn, không dán key thật vào đây để bảo mật mã nguồn!
 
 try:
-    # Ưu tiên lấy API Key từ cấu hình Secrets của Streamlit Cloud (nếu có)
+    # Hệ thống sẽ tự động lấy Key từ "két sắt" Secrets của Streamlit Cloud mà thầy đã cài đặt
     if "GEMINI_API_KEY" in st.secrets:
         API_KEY = st.secrets["GEMINI_API_KEY"]
 except:
     pass
 
-if API_KEY == "AQ.Ab8RN6K4nRaymmRhIC84P_ZKhUKu0Ae4k0Ym_1G2Dac95jH9fg":
-    st.warning("⚠️ **Lưu ý:** Thầy chưa cấu hình API Key của Gemini. Vui lòng mở file code và dán API Key vào để Chatbot hoạt động.")
+# Nếu hệ thống không tìm thấy key trong két sắt, nó mới báo lỗi
+if not API_KEY:
+    st.warning("⚠️ **Lưu ý:** Thầy chưa cấu hình API Key của Gemini trong Streamlit Secrets. Vui lòng kiểm tra lại phần Advanced Settings trên Streamlit Cloud.")
     st.stop()
 
 genai.configure(api_key=API_KEY)
