@@ -40,6 +40,8 @@ if not API_KEY:
     """)
     st.stop()
 
+# KẾT NỐI CHÌA KHÓA CHUẨN VỚI HỆ THỐNG
+genai.configure(api_key=API_KEY)
 
 # ==========================================
 # 3. "BỘ NÃO" TRI THỨC CỦA AI (SYSTEM INSTRUCTION)
