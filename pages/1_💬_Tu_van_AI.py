@@ -81,7 +81,7 @@ LƯU Ý KHI TRẢ LỜI: Trả lời ngắn gọn, súc tích, chia đoạn rõ 
 
 # Khởi tạo mô hình AI (Sử dụng bản Flash chuẩn và ổn định nhất)
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-flash-latest", # <-- Đã thêm chữ -latest
     system_instruction=KNOWLEDGE_BASE
 )
 
