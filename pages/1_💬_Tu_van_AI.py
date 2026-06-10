@@ -70,9 +70,9 @@ NHIỆM VỤ CỦA BẠN:
 - Link Form Đăng ký: Truy cập trang Đăng ký trên menu bên trái để điền thông tin.
 """
 
-# Khởi tạo mô hình AI (ÉP DÙNG BẢN LATEST ĐỂ TRÁNH LỖI 404)
+# Khởi tạo mô hình AI (Gọi đích danh phiên bản lõi 001)
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash-latest",
+    model_name="gemini-1.5-flash-001",
     system_instruction=KNOWLEDGE_BASE
 )
 
