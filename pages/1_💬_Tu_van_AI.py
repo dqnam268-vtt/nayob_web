@@ -40,8 +40,6 @@ if not API_KEY:
     """)
     st.stop()
 
-# Khởi tạo kết nối AI (Đã thêm transport="rest" để ép hệ thống nhận diện đúng mã AQ)
-genai.configure(api_key=API_KEY, transport="rest")
 
 # ==========================================
 # 3. "BỘ NÃO" TRI THỨC CỦA AI (SYSTEM INSTRUCTION)
