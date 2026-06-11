@@ -20,45 +20,35 @@ st.markdown('<div class="subtitle-text">Tư vấn lộ trình học Toán 24/7 c
 st.markdown("---")
 
 # ==========================================
-# 2. XỬ LÝ API KEY TỪ SECRETS
+# 2. ĐƯỜNG DẪN PROXY (GOOGLE APPS SCRIPT)
 # ==========================================
-API_KEY = None
-if "GEMINI_API_KEY" in st.secrets:
-    API_KEY = st.secrets["GEMINI_API_KEY"]
-
-if not API_KEY:
-    st.error("⚠️ **Hệ thống chưa kết nối được với API Key. Thầy vui lòng kiểm tra lại thiết lập Secrets.**")
-    st.stop()
+# Sử dụng trực tiếp đường link trung gian của thầy thay cho API Key
+APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi8UZVwXnrY_8AEBnwbLUAxEAz6xzeDAJP24kO8wBd9c5g0mdmhx6Qpg0JQkNJuCOg/exec"
 
 # ==========================================
 # 3. TRI THỨC CỦA AI
 # ==========================================
 KNOWLEDGE_BASE = """
-BẠN LÀ: Một trợ lý tuyển sinh cực kỳ thân thiện, chuyên nghiệp, lịch sự và thấu hiểu tâm lý của Lớp Toán Thầy Đinh Quốc Nam (Thương hiệu NaYoB - Navigate Yourself).
+BẠN LÀ: Trợ lý tuyển sinh của Lớp Toán Thầy Đinh Quốc Nam (NaYoB).
 
-NHIỆM VỤ:
-1. Chào hỏi thân thiện và hỏi phụ huynh cần tư vấn cho khối lớp mấy.
-2. Cung cấp thông tin lịch học, học phí (1.000.000 VNĐ/tháng).
-3. Hướng dẫn phụ huynh liên hệ Zalo 0356015268 để đăng ký.
-
-THÔNG TIN LỊCH HỌC:
+THÔNG TIN LỊCH HỌC & HỌC PHÍ:
+- Học phí chung: 1.000.000 VNĐ/tháng.
 - Lớp 6: Thứ 3 & Thứ 5 (18h15 - 19h45)
 - Lớp 7: Thứ 2 & Thứ 4 (17h00 - 18h30)
 - Lớp 8: Thứ 3 & Thứ 5 (17h00 - 18h30)
 - Lớp 9: Thứ 2 & Thứ 4 (18h15 - 19h45)
+
+LIÊN HỆ: 
+- Hướng dẫn phụ huynh liên hệ Hotline/Zalo trực tiếp Thầy Nam: 0356015268.
 """
 
 # ==========================================
-# 4. GIAO DIỆN CHAT TRỰC TIẾP QUA REST API
+# 4. GIAO DIỆN CHAT 
 # ==========================================
 if "messages" not in st.session_state:
     st.session_state.messages = [{
         "role": "assistant", 
-        "content": (
-            "Chào thầy Nam, chào Quý phụ huynh! "
-            "Tôi là trợ lý AI của NaYoB. Tôi có thể giúp tra cứu lịch học, "
-            "học phí hoặc tư vấn lộ trình học Toán. Anh/chị cần hỗ trợ thông tin gì ạ?"
-        )
+        "content": "Chào thầy Nam, chào Quý phụ huynh! Tôi là trợ lý AI của NaYoB. Anh/chị cần tra cứu lịch học, học phí cho khối lớp mấy ạ?"
     }]
 
 for message in st.session_state.messages:
@@ -75,40 +65,49 @@ if prompt := st.chat_input("Nhập câu hỏi tại đây..."):
         message_placeholder.markdown("*(Đang suy nghĩ...)*")
         
         try:
-            # Gom lịch sử hội thoại
-            contents = []
-            for m in st.session_state.messages[1:]:
-                role = "user" if m["role"] == "user" else "model"
-                contents.append({
-                    "role": role,
-                    "parts": [{"text": m["content"]}]
-                })
+            # 1. Chế tạo lịch sử hội thoại
+            history_text = ""
+            for msg in st.session_state.messages[-4:-1]:
+                nguoi_gui = "Phụ huynh" if msg["role"] == "user" else "Trợ lý"
+                history_text += f"{nguoi_gui}: {msg['content']}\n"
 
-            # Đóng gói dữ liệu
+            full_prompt = f"""
+            Lịch sử trò chuyện gần đây:
+            {history_text}
+            
+            Câu hỏi mới của phụ huynh: {prompt}
+            """
+            
+            # 2. Đóng gói dữ liệu gửi thẳng qua link Apps Script của thầy
             payload = {
-                "systemInstruction": {"parts": [{"text": KNOWLEDGE_BASE}]},
-                "contents": contents
+                "action": "solve",
+                "contents": [{"parts": [{"text": full_prompt}]}],
+                "systemInstruction": {"parts": [{"text": KNOWLEDGE_BASE}]}
             }
             
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
-            headers = {"Content-Type": "application/json"}
+            response = requests.post(
+                APPS_SCRIPT_URL,
+                headers={"Content-Type": "text/plain;charset=utf-8"},
+                data=json.dumps(payload),
+                allow_redirects=True
+            )
             
-            # Gửi yêu cầu qua requests
-            response = requests.post(url, headers=headers, data=json.dumps(payload))
-            
+            # 3. Xử lý câu trả lời trả về
             if response.status_code == 200:
-                result = response.json()
-                bot_reply = result["candidates"][0]["content"]["parts"][0]["text"]
+                data = response.json()
+                bot_reply = data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
                 
+                if not bot_reply:
+                    bot_reply = "Xin lỗi, hiện tại AI chưa thể xử lý câu hỏi này."
+                    
                 message_placeholder.markdown(bot_reply)
                 st.session_state.messages.append({"role": "assistant", "content": bot_reply})
             else:
-                st.error(f"Lỗi phản hồi từ Google: {response.text}")
-                message_placeholder.markdown("Xin lỗi, máy chủ AI đang bảo trì. Quý phụ huynh vui lòng liên hệ Zalo 0356015268 để được hỗ trợ ạ.")
+                st.error(f"Lỗi đường truyền trung gian: Máy chủ phản hồi mã {response.status_code}")
                 
         except Exception as e:
-            st.error(f"Lỗi kết nối mạng: {e}")
-            message_placeholder.markdown("Xin lỗi, hệ thống đang bận. Quý phụ huynh vui lòng liên hệ Zalo 0356015268 để được hỗ trợ ạ.")
+            st.error(f"Lỗi hệ thống: {e}")
+            message_placeholder.markdown("Xin lỗi, hệ thống đang bận. Quý phụ huynh vui lòng liên hệ Zalo 0356015268 ạ.")
 
 # ==========================================
 # 5. FOOTER
