@@ -11,9 +11,10 @@ st.markdown("""
     <style>
     .title-text { color: #005088; font-family: 'Merriweather', serif; font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 10px; }
     .subtitle-text { color: #11caa0; font-size: 18px; text-align: center; font-style: italic; margin-bottom: 20px; }
-    .suggestion-btn { background-color: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 20px; padding: 6px 12px; font-size: 13px; margin: 4px; display: inline-block; cursor: pointer; transition: 0.3s; }
-    .suggestion-btn:hover { background-color: #e2e8f0; border-color: #94a3b8; }
     .footer { text-align: center; color: #94a3b8; font-style: italic; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+    /* Chỉnh nút gợi ý cho mềm mại, giống phong cách chat UI hiện đại */
+    div[data-testid="stButton"] > button { border-radius: 20px; color: #0f172a; border-color: #cbd5e1; background-color: #f8fafc;}
+    div[data-testid="stButton"] > button:hover { border-color: #005088; color: #005088; background-color: #f0f8ff;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -27,16 +28,20 @@ st.markdown("---")
 APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi8UZVwXnrY_8AEBnwbLUAxEAz6xzeDAJP24kO8wBd9c5g0mdmhx6Qpg0JQkNJuCOg/exec"
 
 # ==========================================
-# 3. TRI THỨC CỦA AI (ĐÃ CẬP NHẬT CHI TIẾT TỪNG LỚP)
+# 3. TRI THỨC CỦA AI (CẬP NHẬT THÊM SĨ SỐ)
 # ==========================================
 KNOWLEDGE_BASE = """
 BẠN LÀ: Trợ lý tuyển sinh chuyên nghiệp của Lớp Toán Thầy Đinh Quốc Nam (Thương hiệu giáo dục NaYoB - Navigate Yourself). Giọng điệu thân thiện, chuyên môn cao, xưng "tôi" và gọi "anh/chị" hoặc "phụ huynh".
 
-CHƯƠNG TRÌNH HỌC (Bám sát SGK Kết nối tri thức):
-- Lớp 6: Số tự nhiên, Phân số, Số thập phân, Hình học trực quan (Hình phẳng, Khối không gian), Tính đối xứng, Thống kê & Xác suất.
-- Lớp 7: Số hữu tỉ, Số thực, Góc & Đường thẳng song song, Tam giác bằng nhau, Đại lượng tỉ lệ, Biểu thức đại số.
-- Lớp 8: Đa thức, Hằng đẳng thức đáng nhớ, Tứ giác, Định lí Thalès, Tam giác đồng dạng, Hàm số & Đồ thị.
-- Lớp 9 (Trọng tâm Ôn thi TS 10): Phương trình & Hệ phương trình, Căn bậc hai/ba, Hệ thức lượng trong tam giác vuông, Đường tròn. Bổ sung liên tục các chuyên đề luyện thi (Vi-ét, Giải toán lập phương trình, Hình học phẳng tổng hợp).
+CHƯƠNG TRÌNH HỌC (Sách Kết nối tri thức) & MÔI TRƯỜNG:
+- Lớp 6: Số tự nhiên, Phân số, Số thập phân, Hình học trực quan, Khối không gian, Tính đối xứng.
+- Lớp 7: Số hữu tỉ, Số thực, Góc & Đường thẳng song song, Tam giác bằng nhau, Đại lượng tỉ lệ.
+- Lớp 8: Đa thức, Hằng đẳng thức, Tứ giác, Định lí Thalès, Tam giác đồng dạng.
+- Sĩ số lớp học: Giới hạn tối đa 15 học sinh/lớp để Thầy Nam có thể theo sát, kèm cặp từng em và định hướng tư duy cá nhân hóa.
+
+ĐẶC BIỆT KHỐI 9 (TRỌNG TÂM ÔN THI TS10 TẠI TP.HCM):
+- Đề thi Toán Tuyển sinh 10 tại TP.HCM rất đặc thù. Trọng tâm cực kỳ lớn (chiếm 4.5/10 điểm) rơi vào các bài TOÁN THỰC TẾ đòi hỏi đọc hiểu dài, lập phương trình, lãi suất. Kèm theo Vi-et, Đồ thị, Hình phẳng.
+- Lộ trình: Rèn luyện phương pháp "Navigate Yourself" giúp học sinh tự phân tích đề dài, bóc tách dữ liệu để mô hình hóa bài toán thực tế mà không bị tâm lý e ngại.
 
 THÔNG TIN LỊCH HỌC & HỌC PHÍ:
 - Học phí chung các khối: 1.000.000 VNĐ/tháng.
@@ -45,46 +50,51 @@ THÔNG TIN LỊCH HỌC & HỌC PHÍ:
 - Lớp 8: Thứ 3 & Thứ 5 (17h00 - 18h30)
 - Lớp 9: Thứ 2 & Thứ 4 (18h45 - 20h15)
 
-KỸ NĂNG DẪN DẮT (QUAN TRỌNG): 
-- Nếu phụ huynh hỏi chung chung, bạn hãy chủ động mồi thêm câu hỏi: "Anh/chị muốn tìm hiểu thêm về *Trọng tâm kiến thức lớp...* hay *Phương pháp dạy học định hướng* của Thầy Nam không ạ?"
-- Luôn kết thúc bằng việc mời phụ huynh liên hệ Zalo 0356015268 để được xếp lớp.
+KỸ NĂNG DẪN DẮT: 
+- Luôn trả lời ngắn gọn, xuống dòng rõ ràng.
+- Khéo léo mời phụ huynh liên hệ Zalo 0356015268 để Thầy Nam trực tiếp kiểm tra năng lực đầu vào và xếp lớp.
 """
 
 # ==========================================
-# 4. GIAO DIỆN CHAT VÀ TỪ KHÓA GỢI Ý
+# 4. GIAO DIỆN CHAT VÀ NÚT TÒ MÒ ĐỘNG
 # ==========================================
-# Khởi tạo tin nhắn chào mừng và các nút gợi ý
 if "messages" not in st.session_state:
     loi_chao = (
         "Kính chào Quý phụ huynh! 👋 Tôi là trợ lý AI của hệ thống Toán NaYoB.\n\n"
-        "Tôi có thể hỗ trợ anh/chị các thông tin sau:\n"
-        "1️⃣ **Lịch học & Học phí** các khối THCS.\n"
-        "2️⃣ **Trọng tâm kiến thức** theo bộ sách Kết nối tri thức.\n"
-        "3️⃣ **Lộ trình ôn thi Tuyển sinh 10** (Khối 9).\n\n"
-        "Anh/chị quan tâm đến khối lớp mấy hoặc cần tôi tư vấn chủ đề gì ạ?"
+        "Anh/chị đang quan tâm lịch học, học phí hay chương trình đào tạo của khối lớp mấy ạ?"
     )
     st.session_state.messages = [{"role": "assistant", "content": loi_chao}]
 
-# In lịch sử tin nhắn
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Hiển thị các từ khóa mồi (chỉ hiện khi chưa có nhiều tin nhắn để giao diện gọn gàng)
-if len(st.session_state.messages) <= 3:
-    st.markdown("<div style='text-align: center; margin-bottom: 10px; color: #64748b; font-size: 14px;'>💡 <i>Gợi ý câu hỏi thường gặp:</i></div>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("Lịch học lớp 9 ôn TS 10?", use_container_width=True):
-            st.session_state.quick_prompt = "Xin tư vấn lịch học và lộ trình lớp 9 ôn thi Tuyển sinh 10."
-    with col2:
-        if st.button("Học phí và Lịch lớp 6?", use_container_width=True):
-            st.session_state.quick_prompt = "Cho tôi hỏi học phí và lịch học của khối lớp 6."
-    with col3:
-        if st.button("Trọng tâm kiến thức lớp 8?", use_container_width=True):
-            st.session_state.quick_prompt = "Chương trình lớp 8 sách Kết nối tri thức học những nội dung gì trọng tâm?"
+# --- BỘ QUÉT NGỮ CẢNH: CHỌN NÚT GỢI Ý ĐỘNG ---
+# Lấy nội dung 2 tin nhắn gần nhất để phân tích đang nói về chủ đề gì
+recent_context = " ".join([m["content"].lower() for m in st.session_state.messages[-2:]])
 
-# Xử lý input từ người dùng (nhập tay hoặc bấm nút)
+goi_y = []
+if "lớp 6" in recent_context:
+    goi_y = ["Sĩ số một lớp 6 là bao nhiêu?", "Chương trình lớp 6 học những gì?", "Lịch học & Học phí lớp 6"]
+elif "lớp 7" in recent_context:
+    goi_y = ["Trọng tâm kiến thức Lớp 7", "Sĩ số lớp 7", "Lịch học & Học phí"]
+elif "lớp 8" in recent_context:
+    goi_y = ["Hình học lớp 8 khó không?", "Lịch học & Học phí lớp 8", "Sĩ số lớp"]
+elif "lớp 9" in recent_context or "tuyển sinh" in recent_context or "ts 10" in recent_context:
+    goi_y = ["Cấu trúc Toán TS10 TP.HCM", "Lộ trình ôn thi Lớp 9", "Sĩ số lớp 9"]
+else:
+    # Mặc định khi mới vào hoặc hỏi chung chung
+    goi_y = ["Tư vấn giúp tôi Lớp 6", "Tư vấn chương trình Lớp 9 Ôn TS10", "Sĩ số lớp học của Thầy Nam?"]
+
+# --- HIỂN THỊ NÚT GỢI Ý ---
+st.markdown("<div style='text-align: center; margin-bottom: 5px; margin-top: 10px; color: #64748b; font-size: 14px;'>💡 <i>Gợi ý cho Quý phụ huynh:</i></div>", unsafe_allow_html=True)
+cols = st.columns(3)
+for i, cau_hoi in enumerate(goi_y):
+    with cols[i]:
+        if st.button(cau_hoi, use_container_width=True):
+            st.session_state.quick_prompt = cau_hoi
+
+# --- KHUNG NHẬP CHAT ---
 prompt = st.chat_input("Nhập câu hỏi của Quý phụ huynh tại đây...")
 
 if "quick_prompt" in st.session_state and st.session_state.quick_prompt:
@@ -101,7 +111,6 @@ if prompt:
         message_placeholder.markdown("*(Đang suy nghĩ...)*")
         
         try:
-            # Chế tạo lịch sử hội thoại
             history_text = ""
             for msg in st.session_state.messages[-4:-1]:
                 nguoi_gui = "Phụ huynh" if msg["role"] == "user" else "Trợ lý"
@@ -114,7 +123,6 @@ if prompt:
             Câu hỏi mới của phụ huynh: {prompt}
             """
             
-            # Gửi qua Apps Script
             payload = {
                 "action": "solve",
                 "contents": [{"parts": [{"text": full_prompt}]}],
@@ -137,6 +145,7 @@ if prompt:
                     
                 message_placeholder.markdown(bot_reply)
                 st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+                st.rerun() # Tải lại trang ngay lập tức để cập nhật bộ nút gợi ý mới
             else:
                 st.error("Lỗi đường truyền trung gian.")
                 
