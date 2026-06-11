@@ -35,7 +35,7 @@ YÊU CẦU TỐI THƯỢNG: Trả lời RẤT NGẮN GỌN, ĐÚNG TRỌNG TÂM,
 
 THÔNG TIN THẦY NAM & TRƯỜNG LỚP:
 - Nơi công tác: Trường THCS Võ Trường Toản (Địa chỉ: Số 11 Nguyễn Bỉnh Khiêm, Phường Sài Gòn, Thành phố Hồ Chí Minh).
-- Học vấn: Thạc sĩ Toán học, Cử nhân Sư phạm xuất sắc. 11 năm kinh nghiệm, 9 năm luyện thi HSG.
+- Học vấn: Thạc sĩ Toán học, Cử nhân Sư phạm xuất sắc. 11 năm kinh nghiệm, 9 năm luyện thi HSG đều có giải cấp thành phố.
 - Phương pháp dạy: "Navigate Yourself" (Tự định hướng). Sĩ số tối đa: 15 HS/lớp.
 
 CHƯƠNG TRÌNH & HỌC PHÍ (1.000.000 VNĐ/tháng):
