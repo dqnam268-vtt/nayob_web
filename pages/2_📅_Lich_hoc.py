@@ -4,7 +4,7 @@ import pandas as pd
 # ==========================================
 # 1. CẤU HÌNH TRANG
 # ==========================================
-st.set_page_config(page_title="Lịch học & Học phí - NaYoB", page_icon="📅", layout="centered")
+st.set_page_config(page_title="Lịch học và Học phí - NaYoB", page_icon="📅", layout="centered")
 
 # Custom CSS đồng bộ giao diện
 st.markdown("""
@@ -27,7 +27,7 @@ st.markdown('<h3 class="section-header">💎 Chính sách Học phí</h3>', unsa
 st.markdown('<div class="price-tag">1.000.000 VNĐ / Tháng</div>', unsafe_allow_html=True)
 st.markdown("""
 * **Áp dụng đồng giá** cho tất cả các khối lớp (Từ lớp 6 đến lớp 9).
-* Mức phí này đã bao gồm toàn bộ tài liệu học tập thiết kế riêng (Made by NamY), hệ thống bài tập rèn luyện tư duy và kiểm tra định kỳ.
+* Mức phí này đã bao gồm toàn bộ tài liệu học tập thiết kế riêng , hệ thống bài tập rèn luyện tư duy và kiểm tra định kỳ.
 """)
 
 # ==========================================
@@ -38,9 +38,9 @@ st.markdown('<h3 class="section-header">📅 Lịch học chi tiết</h3>', unsa
 # Tạo dữ liệu bảng bằng Pandas để hiển thị đẹp mắt trên Streamlit
 data = {
     "Khối Lớp": ["Toán 6", "Toán 7", "Toán 8", "Toán 9 (Ôn thi vào 10)"],
-    "Ngày Học": ["Thứ 3 & Thứ 5", "Thứ 2 & Thứ 4", "Thứ 3 & Thứ 5", "Thứ 2 & Thứ 4"],
-    "Khung Giờ": ["18h15 - 19h45", "17h00 - 18h30", "17h00 - 18h30", "18h15 - 19h45"],
-    "Mục Tiêu Trọng Tâm": ["Lấy gốc & Bồi dưỡng tư duy", "Phát triển tư duy logic", "Tăng cường kỹ năng giải bài", "Luyện đề bám sát cấu trúc thi"]
+    "Ngày Học": ["Thứ 3 và Thứ 5", "Thứ 2 và Thứ 4", "Thứ 3 và Thứ 5", "Thứ 2 và Thứ 4"],
+    "Khung Giờ": ["18h45 - 20h15", "17h00 - 18h30", "17h00 - 18h30", "18h45 - 20h15"],
+    "Mục Tiêu Trọng Tâm": ["Lấy gốc và Bồi dưỡng tư duy", "Phát triển tư duy logic", "Tăng cường kỹ năng giải bài", "Luyện đề bám sát cấu trúc thi"]
 }
 
 df_schedule = pd.DataFrame(data)
@@ -51,7 +51,7 @@ st.table(df_schedule.set_index("Khối Lớp"))
 # ==========================================
 # 4. THÔNG TIN ĐỊA ĐIỂM & LIÊN HỆ
 # ==========================================
-st.markdown('<h3 class="section-header">📍 Địa điểm & Đăng ký</h3>', unsafe_allow_html=True)
+st.markdown('<h3 class="section-header">📍 Địa điểm và Đăng ký</h3>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
