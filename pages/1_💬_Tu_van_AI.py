@@ -27,15 +27,15 @@ st.markdown("---")
 APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi8UZVwXnrY_8AEBnwbLUAxEAz6xzeDAJP24kO8wBd9c5g0mdmhx6Qpg0JQkNJuCOg/exec"
 
 # ==========================================
-# 3. TRI THỨC CỦA AI (SYSTEM INSTRUCTION NGUYÊN BẢN)
+# 3. TRI THỨC CỦA AI (ĐÃ CẬP NHẬT ĐỊA CHỈ HỌC)
 # ==========================================
 KNOWLEDGE_BASE = """
 BẠN LÀ: Trợ lý AI của Thầy Đinh Quốc Nam (NaYoB).
-YÊU CẦU TỐI THƯỢNG: Trả lời RẤT NGẮN GỌN, ĐÚNG TRỌNG TÂM, KHÔNG DÀI DÒNG (tối đa 3-4 câu). Dùng gạch đầu dòng cho dễ đọc. Tự suy luận linh hoạt dựa trên ngữ cảnh câu hỏi trước đó.
+YÊU CẦU TỐI THƯỢNG: Trả lời RẤT NGẮN GỌN, ĐÚNG TRỌNG TÂM, KHÔNG DÀI DÒNG (tối đa 3-4 câu). Dùng gạch đầu dòng cho dễ đọc. Tự suy luận linh hoạt dựa trên ngữ cảnh.
 
-THÔNG TIN THẦY NAM & TRƯỜNG LỚP:
-- Nơi công tác: Trường THCS Võ Trường Toản (Địa chỉ: Số 11 Nguyễn Bỉnh Khiêm, Phường Sài Gòn, Thành phố Hồ Chí Minh).
-- Học vấn: Thạc sĩ Toán học, Cử nhân Sư phạm xuất sắc. 11 năm kinh nghiệm, 9 năm luyện thi HSG đều có giải cấp thành phố.
+THÔNG TIN THẦY NAM & CHUYÊN MÔN:
+- Nơi công tác: Thầy Nam hiện đang công tác tại Trường THCS Võ Trường Toản.
+- Học vấn: Thạc sĩ Toán học, Cử nhân Sư phạm xuất sắc. 11 năm kinh nghiệm, 9 năm luyện thi HSG.
 - Phương pháp dạy: "Navigate Yourself" (Tự định hướng). Sĩ số tối đa: 15 HS/lớp.
 
 CHƯƠNG TRÌNH & HỌC PHÍ (1.000.000 VNĐ/tháng):
@@ -44,8 +44,9 @@ CHƯƠNG TRÌNH & HỌC PHÍ (1.000.000 VNĐ/tháng):
 - Lớp 8 (T3 & T5, 17h00 - 18h30): Đại số, Tứ giác, Định lý Thalès.
 - Lớp 9 (T2 & T4, 18h45 - 20h15): Ôn thi TS10 TP.HCM. Trọng tâm giải Toán thực tế, Vi-et, Đồ thị, Hình phẳng.
 
-LIÊN HỆ: 
-- Nhanh chóng đưa ra lời mời phụ huynh kết bạn Zalo 0356015268 để Thầy Nam xếp lớp.
+ĐỊA ĐIỂM HỌC & LIÊN HỆ: 
+- TUYỆT ĐỐI KHÔNG CUNG CẤP ĐỊA CHỈ TRƯỜNG LÀM ĐỊA CHỈ HỌC THÊM. 
+- Nếu phụ huynh hỏi địa chỉ học ở đâu, hãy báo phụ huynh kết bạn Zalo 0356015268 để Thầy Nam thông báo địa điểm lớp học chi tiết và xếp lớp phù hợp.
 """
 
 # ==========================================
@@ -63,13 +64,13 @@ recent_context = " ".join([m["content"].lower() for m in st.session_state.messag
 
 goi_y = []
 if "lớp 6" in recent_context:
-    goi_y = ["Sĩ số lớp 6?", "Lịch & Học phí lớp 6", "Phương pháp dạy của Thầy"]
+    goi_y = ["Địa điểm học ở đâu?", "Lịch & Học phí lớp 6", "Phương pháp dạy của Thầy"]
 elif "lớp 9" in recent_context or "ts 10" in recent_context:
-    goi_y = ["Đề TS10 khó chỗ nào?", "Lịch ôn Lớp 9", "Kinh nghiệm của Thầy Nam"]
-elif "thầy nam" in recent_context or "trường" in recent_context or "phường" in recent_context or "sài gòn" in recent_context:
-    goi_y = ["Thầy Nam dạy trường nào?", "Thành tích của Thầy?", "Địa chỉ THCS Võ Trường Toản"]
+    goi_y = ["Đề TS10 khó chỗ nào?", "Lịch ôn Lớp 9", "Địa điểm học Lớp 9"]
+elif "thầy nam" in recent_context or "địa chỉ" in recent_context or "ở đâu" in recent_context:
+    goi_y = ["Thành tích của Thầy?", "Địa điểm lớp học thêm ở đâu?", "Thầy Nam công tác trường nào?"]
 else:
-    goi_y = ["Thầy Nam công tác trường nào?", "Lịch học Lớp 9", "Học phí và sĩ số lớp?"]
+    goi_y = ["Địa điểm học ở đâu?", "Lịch học Lớp 9", "Học phí và sĩ số lớp?"]
 
 # --- HIỂN THỊ NÚT ---
 st.markdown("<div style='text-align: center; margin-bottom: 5px; margin-top: 10px; color: #64748b; font-size: 13px;'>💡 <i>Gợi ý câu hỏi:</i></div>", unsafe_allow_html=True)
@@ -95,10 +96,8 @@ if prompt:
         message_placeholder.markdown("*(Đang suy nghĩ...)*")
         
         try:
-            # KỸ THUẬT MỚI: Truyền lịch sử hội thoại chuẩn form Gemini qua Apps Script
             contents_payload = []
             
-            # Bỏ qua câu chào mặc định đầu tiên để tránh lỗi định dạng
             for msg in st.session_state.messages[1:-1]:
                 role = "user" if msg["role"] == "user" else "model"
                 contents_payload.append({
@@ -106,13 +105,11 @@ if prompt:
                     "parts": [{"text": msg["content"]}]
                 })
             
-            # Đưa câu hỏi mới nhất vào
             contents_payload.append({
                 "role": "user",
                 "parts": [{"text": prompt}]
             })
             
-            # Đóng gói dữ liệu gửi đi (AI sẽ tự đọc hiểu toàn bộ mảng nội dung này)
             payload = {
                 "action": "solve",
                 "contents": contents_payload,
