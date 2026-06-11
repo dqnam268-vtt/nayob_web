@@ -12,7 +12,6 @@ st.markdown("""
     .title-text { color: #005088; font-family: 'Merriweather', serif; font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 10px; }
     .subtitle-text { color: #11caa0; font-size: 18px; text-align: center; font-style: italic; margin-bottom: 20px; }
     .footer { text-align: center; color: #94a3b8; font-style: italic; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; }
-    /* Chỉnh nút gợi ý cho mềm mại, giống phong cách chat UI hiện đại */
     div[data-testid="stButton"] > button { border-radius: 20px; color: #0f172a; border-color: #cbd5e1; background-color: #f8fafc;}
     div[data-testid="stButton"] > button:hover { border-color: #005088; color: #005088; background-color: #f0f8ff;}
     </style>
@@ -28,16 +27,22 @@ st.markdown("---")
 APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi8UZVwXnrY_8AEBnwbLUAxEAz6xzeDAJP24kO8wBd9c5g0mdmhx6Qpg0JQkNJuCOg/exec"
 
 # ==========================================
-# 3. TRI THỨC CỦA AI (CẬP NHẬT THÊM SĨ SỐ)
+# 3. TRI THỨC CỦA AI (CẬP NHẬT PROFILE THẦY NAM)
 # ==========================================
 KNOWLEDGE_BASE = """
 BẠN LÀ: Trợ lý tuyển sinh chuyên nghiệp của Lớp Toán Thầy Đinh Quốc Nam (Thương hiệu giáo dục NaYoB - Navigate Yourself). Giọng điệu thân thiện, chuyên môn cao, xưng "tôi" và gọi "anh/chị" hoặc "phụ huynh".
+
+HỒ SƠ NĂNG LỰC CỦA THẦY ĐINH QUỐC NAM (Rất quan trọng - dùng để tạo uy tín):
+- Học vấn: Thạc sĩ Lý luận & Phương pháp dạy học Toán; Cử nhân Sư phạm Toán - Tin (Xuất sắc); Cử nhân Ngôn ngữ Anh.
+- Kinh nghiệm: Hơn 11 năm giảng dạy trực tiếp tại THCS Võ Trường Toản (TP.HCM).
+- Thành tích nổi bật: 9 năm liên tiếp bồi dưỡng học sinh giỏi Toán cấp Thành phố. Là chuyên gia bồi dưỡng kỹ năng giải toán trắc nghiệm nhanh bằng máy tính cầm tay Casio.
+- Triết lý giáo dục: Sáng lập phương pháp "Navigate Yourself" (Tự định hướng) - Tuyệt đối không dạy học vẹt, tập trung rèn luyện tư duy logic để học sinh tự giải quyết vấn đề, yêu thích môn Toán và giảm áp lực học tập.
 
 CHƯƠNG TRÌNH HỌC (Sách Kết nối tri thức) & MÔI TRƯỜNG:
 - Lớp 6: Số tự nhiên, Phân số, Số thập phân, Hình học trực quan, Khối không gian, Tính đối xứng.
 - Lớp 7: Số hữu tỉ, Số thực, Góc & Đường thẳng song song, Tam giác bằng nhau, Đại lượng tỉ lệ.
 - Lớp 8: Đa thức, Hằng đẳng thức, Tứ giác, Định lí Thalès, Tam giác đồng dạng.
-- Sĩ số lớp học: Giới hạn tối đa 15 học sinh/lớp để Thầy Nam có thể theo sát, kèm cặp từng em và định hướng tư duy cá nhân hóa.
+- Sĩ số lớp học: Giới hạn tối đa 15 học sinh/lớp để Thầy Nam trực tiếp theo sát, kèm cặp và định hướng tư duy cá nhân hóa.
 
 ĐẶC BIỆT KHỐI 9 (TRỌNG TÂM ÔN THI TS10 TẠI TP.HCM):
 - Đề thi Toán Tuyển sinh 10 tại TP.HCM rất đặc thù. Trọng tâm cực kỳ lớn (chiếm 4.5/10 điểm) rơi vào các bài TOÁN THỰC TẾ đòi hỏi đọc hiểu dài, lập phương trình, lãi suất. Kèm theo Vi-et, Đồ thị, Hình phẳng.
@@ -51,7 +56,7 @@ THÔNG TIN LỊCH HỌC & HỌC PHÍ:
 - Lớp 9: Thứ 2 & Thứ 4 (18h45 - 20h15)
 
 KỸ NĂNG DẪN DẮT: 
-- Luôn trả lời ngắn gọn, xuống dòng rõ ràng.
+- Luôn trả lời tự tin, nhiệt tình. Nêu bật kinh nghiệm của Thầy Nam khi phụ huynh tỏ ra băn khoăn về chất lượng giảng dạy.
 - Khéo léo mời phụ huynh liên hệ Zalo 0356015268 để Thầy Nam trực tiếp kiểm tra năng lực đầu vào và xếp lớp.
 """
 
@@ -61,7 +66,7 @@ KỸ NĂNG DẪN DẮT:
 if "messages" not in st.session_state:
     loi_chao = (
         "Kính chào Quý phụ huynh! 👋 Tôi là trợ lý AI của hệ thống Toán NaYoB.\n\n"
-        "Anh/chị đang quan tâm lịch học, học phí hay chương trình đào tạo của khối lớp mấy ạ?"
+        "Anh/chị đang quan tâm lịch học, học phí hay muốn tìm hiểu về phương pháp giảng dạy của Thầy Nam ạ?"
     )
     st.session_state.messages = [{"role": "assistant", "content": loi_chao}]
 
@@ -70,21 +75,21 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # --- BỘ QUÉT NGỮ CẢNH: CHỌN NÚT GỢI Ý ĐỘNG ---
-# Lấy nội dung 2 tin nhắn gần nhất để phân tích đang nói về chủ đề gì
 recent_context = " ".join([m["content"].lower() for m in st.session_state.messages[-2:]])
 
 goi_y = []
-if "lớp 6" in recent_context:
-    goi_y = ["Sĩ số một lớp 6 là bao nhiêu?", "Chương trình lớp 6 học những gì?", "Lịch học & Học phí lớp 6"]
+if "thầy nam" in recent_context or "giáo viên" in recent_context or "kinh nghiệm" in recent_context or "dạy" in recent_context:
+    goi_y = ["Thành tích & Kinh nghiệm của Thầy Nam?", "Phương pháp Navigate Yourself là gì?", "Sĩ số lớp học bao nhiêu?"]
+elif "lớp 6" in recent_context:
+    goi_y = ["Chương trình Toán 6 học gì?", "Lịch học & Học phí lớp 6", "Phương pháp dạy Thầy Nam"]
 elif "lớp 7" in recent_context:
     goi_y = ["Trọng tâm kiến thức Lớp 7", "Sĩ số lớp 7", "Lịch học & Học phí"]
 elif "lớp 8" in recent_context:
-    goi_y = ["Hình học lớp 8 khó không?", "Lịch học & Học phí lớp 8", "Sĩ số lớp"]
+    goi_y = ["Hình học lớp 8 khó không?", "Lịch học & Học phí lớp 8", "Thầy Nam dạy có dễ hiểu không?"]
 elif "lớp 9" in recent_context or "tuyển sinh" in recent_context or "ts 10" in recent_context:
-    goi_y = ["Cấu trúc Toán TS10 TP.HCM", "Lộ trình ôn thi Lớp 9", "Sĩ số lớp 9"]
+    goi_y = ["Cấu trúc Toán TS10 TP.HCM", "Lộ trình ôn thi Lớp 9", "Kinh nghiệm luyện HSG của Thầy Nam"]
 else:
-    # Mặc định khi mới vào hoặc hỏi chung chung
-    goi_y = ["Tư vấn giúp tôi Lớp 6", "Tư vấn chương trình Lớp 9 Ôn TS10", "Sĩ số lớp học của Thầy Nam?"]
+    goi_y = ["Kinh nghiệm giảng dạy của Thầy Nam?", "Tư vấn chương trình Lớp 9 Ôn TS10", "Sĩ số và Lịch học các khối?"]
 
 # --- HIỂN THỊ NÚT GỢI Ý ---
 st.markdown("<div style='text-align: center; margin-bottom: 5px; margin-top: 10px; color: #64748b; font-size: 14px;'>💡 <i>Gợi ý cho Quý phụ huynh:</i></div>", unsafe_allow_html=True)
@@ -145,7 +150,7 @@ if prompt:
                     
                 message_placeholder.markdown(bot_reply)
                 st.session_state.messages.append({"role": "assistant", "content": bot_reply})
-                st.rerun() # Tải lại trang ngay lập tức để cập nhật bộ nút gợi ý mới
+                st.rerun() 
             else:
                 st.error("Lỗi đường truyền trung gian.")
                 
