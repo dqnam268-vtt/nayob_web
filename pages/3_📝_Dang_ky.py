@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 # ==========================================
 # 1. CẤU HÌNH TRANG
@@ -32,8 +31,8 @@ if "?embedded=true" not in GOOGLE_FORM_URL and "&embedded=true" not in GOOGLE_FO
     else:
         GOOGLE_FORM_URL += "?embedded=true"
 
-# Nhúng Iframe Google Form với chiều cao 800px để hiển thị đầy đủ
-components.iframe(GOOGLE_FORM_URL, width=700, height=800, scrolling=True)
+# Đã thay thế thành st.iframe theo chuẩn mới nhất của Streamlit
+st.iframe(GOOGLE_FORM_URL, width=700, height=800, scrolling=True)
 
 # Nút dự phòng trong trường hợp trình duyệt điện thoại của phụ huynh chặn iFrame
 st.markdown("---")

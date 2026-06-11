@@ -20,46 +20,97 @@ st.markdown('<div class="subtitle-text">Tư vấn lộ trình học Toán 24/7 c
 st.markdown("---")
 
 # ==========================================
-# 2. XỬ LÝ API KEY
+# 2. XỬ LÝ API KEY TỪ SECRETS
 # ==========================================
 API_KEY = None
 if "GEMINI_API_KEY" in st.secrets:
     API_KEY = st.secrets["GEMINI_API_KEY"]
 
 if not API_KEY:
-    st.error("⚠️ **Hệ thống chưa kết nối được với não bộ AI (Thiếu API Key)!**")
+    st.error("⚠️ **Hệ thống chưa kết nối được với API Key. Thầy vui lòng kiểm tra lại thiết lập Secrets.**")
     st.stop()
 
 # ==========================================
-# 3. "BỘ NÃO" TRI THỨC CỦA AI
+# 3. TRI THỨC CỦA AI
 # ==========================================
 KNOWLEDGE_BASE = """
 BẠN LÀ: Một trợ lý tuyển sinh cực kỳ thân thiện, chuyên nghiệp, lịch sự và thấu hiểu tâm lý của Lớp Toán Thầy Đinh Quốc Nam (Thương hiệu NaYoB - Navigate Yourself).
 
-NHIỆM VỤ CỦA BẠN:
-1. Chào hỏi thân thiện và hỏi xem phụ huynh/học sinh cần tư vấn cho khối lớp mấy.
-2. Cung cấp thông tin chính xác về lịch học, học phí.
-3. Nhấn mạnh vào hồ sơ chuyên môn vượt trội của Thầy Nam để tạo niềm tin.
-4. Hướng dẫn phụ huynh liên hệ Zalo 0356015268 hoặc điền form để đăng ký giữ chỗ.
+NHIỆM VỤ:
+1. Chào hỏi thân thiện và hỏi phụ huynh cần tư vấn cho khối lớp mấy.
+2. Cung cấp thông tin lịch học, học phí (1.000.000 VNĐ/tháng).
+3. Hướng dẫn phụ huynh liên hệ Zalo 0356015268 để đăng ký.
 
---- THÔNG TIN CHUYÊN MÔN CỦA THẦY ĐINH QUỐC NAM ---
-- Hơn 11 năm kinh nghiệm giảng dạy tại THCS Võ Trường Toản (TP.HCM).
-- Học vấn: Thạc sĩ Lý luận & Phương pháp dạy học Toán, Cử nhân Sư phạm Toán - Tin (Xuất sắc), Cử nhân Ngôn ngữ Anh.
-- Thành tích: 9 năm liên tiếp bồi dưỡng học sinh giỏi Toán cấp Thành phố.
-- Phương pháp dạy "Navigate Yourself": Tuyệt đối không dạy học vẹt, rèn luyện tư duy tự định hướng.
-
---- THÔNG TIN KHÓA HỌC & HỌC PHÍ ---
-* Học phí chung cho tất cả các lớp THCS (6, 7, 8, 9) là: 1.000.000 VNĐ/tháng.
-* Lớp Toán 6: Thứ 3 & Thứ 5 (18h15 - 19h45)
-* Lớp Toán 7: Thứ 2 & Thứ 4 (17h00 - 18h30)
-* Lớp Toán 8: Thứ 3 & Thứ 5 (17h00 - 18h30)
-* Lớp Toán 9 (Trọng tâm ôn thi vào 10): Thứ 2 & Thứ 4 (18h15 - 19h45)
+THÔNG TIN LỊCH HỌC:
+- Lớp 6: Thứ 3 & Thứ 5 (18h15 - 19h45)
+- Lớp 7: Thứ 2 & Thứ 4 (17h00 - 18h30)
+- Lớp 8: Thứ 3 & Thứ 5 (17h00 - 18h30)
+- Lớp 9: Thứ 2 & Thứ 4 (18h15 - 19h45)
 """
 
 # ==========================================
-# 4. GIAO DIỆN CHAT (SỬ DỤNG GIAO THỨC TRỰC TIẾP API)
+# 4. GIAO DIỆN CHAT TRỰC TIẾP QUA REST API
 # ==========================================
 if "messages" not in st.session_state:
     st.session_state.messages = [{
         "role": "assistant", 
-        "content": "Chào thầy Nam, chào Quý phụ huynh! Tôi là trợ lý AI của NaYoB. Tôi
+        "content": (
+            "Chào thầy Nam, chào Quý phụ huynh! "
+            "Tôi là trợ lý AI của NaYoB. Tôi có thể giúp tra cứu lịch học, "
+            "học phí hoặc tư vấn lộ trình học Toán. Anh/chị cần hỗ trợ thông tin gì ạ?"
+        )
+    }]
+
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if prompt := st.chat_input("Nhập câu hỏi tại đây..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message_placeholder.markdown("*(Đang suy nghĩ...)*")
+        
+        try:
+            # Gom lịch sử hội thoại
+            contents = []
+            for m in st.session_state.messages[1:]:
+                role = "user" if m["role"] == "user" else "model"
+                contents.append({
+                    "role": role,
+                    "parts": [{"text": m["content"]}]
+                })
+
+            # Đóng gói dữ liệu
+            payload = {
+                "systemInstruction": {"parts": [{"text": KNOWLEDGE_BASE}]},
+                "contents": contents
+            }
+            
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+            headers = {"Content-Type": "application/json"}
+            
+            # Gửi yêu cầu qua requests
+            response = requests.post(url, headers=headers, data=json.dumps(payload))
+            
+            if response.status_code == 200:
+                result = response.json()
+                bot_reply = result["candidates"][0]["content"]["parts"][0]["text"]
+                
+                message_placeholder.markdown(bot_reply)
+                st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+            else:
+                st.error(f"Lỗi phản hồi từ Google: {response.text}")
+                message_placeholder.markdown("Xin lỗi, máy chủ AI đang bảo trì. Quý phụ huynh vui lòng liên hệ Zalo 0356015268 để được hỗ trợ ạ.")
+                
+        except Exception as e:
+            st.error(f"Lỗi kết nối mạng: {e}")
+            message_placeholder.markdown("Xin lỗi, hệ thống đang bận. Quý phụ huynh vui lòng liên hệ Zalo 0356015268 để được hỗ trợ ạ.")
+
+# ==========================================
+# 5. FOOTER
+# ==========================================
+st.markdown('<div class="footer">Made by NamY</div>', unsafe_allow_html=True)
