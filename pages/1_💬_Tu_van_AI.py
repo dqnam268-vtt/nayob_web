@@ -5,102 +5,81 @@ import json
 # ==========================================
 # 1. CẤU HÌNH TRANG
 # ==========================================
-st.set_page_config(page_title="Tư vấn Tuyển sinh AI - NaYoB", page_icon="💬", layout="centered")
+st.set_page_config(page_title="Tư vấn Tuyển sinh - NaYoB", page_icon="💬", layout="centered")
 
 st.markdown("""
     <style>
-    .title-text { color: #005088; font-family: 'Merriweather', serif; font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 10px; }
-    .subtitle-text { color: #11caa0; font-size: 18px; text-align: center; font-style: italic; margin-bottom: 20px; }
-    .footer { text-align: center; color: #94a3b8; font-style: italic; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; }
-    div[data-testid="stButton"] > button { border-radius: 20px; color: #0f172a; border-color: #cbd5e1; background-color: #f8fafc;}
-    div[data-testid="stButton"] > button:hover { border-color: #005088; color: #005088; background-color: #f0f8ff;}
+    .title-text { color: #005088; font-family: 'Merriweather', serif; font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 5px; }
+    .subtitle-text { color: #11caa0; font-size: 16px; text-align: center; font-style: italic; margin-bottom: 15px; }
+    div[data-testid="stButton"] > button { border-radius: 20px; font-size: 13px; color: #0f172a; background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 4px 10px; }
+    div[data-testid="stButton"] > button:hover { border-color: #005088; color: #005088; background-color: #e0f2fe; }
+    .footer { text-align: center; color: #94a3b8; font-size: 12px; margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="title-text">Trợ lý AI Tư vấn Tuyển sinh NaYoB</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle-text">Tư vấn lộ trình học Toán 24/7 cùng Thầy Đinh Quốc Nam</div>', unsafe_allow_html=True)
+st.markdown('<div class="title-text">Trợ lý AI - Thầy Đinh Quốc Nam</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle-text">Tư vấn Lộ trình & Lịch học Toán (Hệ thống NaYoB)</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 # ==========================================
-# 2. ĐƯỜNG DẪN PROXY (GOOGLE APPS SCRIPT)
+# 2. ĐƯỜNG DẪN PROXY APPS SCRIPT CỦA THẦY
 # ==========================================
 APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi8UZVwXnrY_8AEBnwbLUAxEAz6xzeDAJP24kO8wBd9c5g0mdmhx6Qpg0JQkNJuCOg/exec"
 
 # ==========================================
-# 3. TRI THỨC CỦA AI (CẬP NHẬT PROFILE THẦY NAM)
+# 3. TRI THỨC CỦA AI (SYSTEM INSTRUCTION NGUYÊN BẢN)
 # ==========================================
 KNOWLEDGE_BASE = """
-BẠN LÀ: Trợ lý tuyển sinh chuyên nghiệp của Lớp Toán Thầy Đinh Quốc Nam (Thương hiệu giáo dục NaYoB - Navigate Yourself). Giọng điệu thân thiện, chuyên môn cao, xưng "tôi" và gọi "anh/chị" hoặc "phụ huynh".
+BẠN LÀ: Trợ lý AI của Thầy Đinh Quốc Nam (NaYoB).
+YÊU CẦU TỐI THƯỢNG: Trả lời RẤT NGẮN GỌN, ĐÚNG TRỌNG TÂM, KHÔNG DÀI DÒNG (tối đa 3-4 câu). Dùng gạch đầu dòng cho dễ đọc. Tự suy luận linh hoạt dựa trên ngữ cảnh câu hỏi trước đó.
 
-HỒ SƠ NĂNG LỰC CỦA THẦY ĐINH QUỐC NAM (Rất quan trọng - dùng để tạo uy tín):
-- Học vấn: Thạc sĩ Lý luận & Phương pháp dạy học Toán; Cử nhân Sư phạm Toán - Tin (Xuất sắc); Cử nhân Ngôn ngữ Anh.
-- Kinh nghiệm: Hơn 11 năm giảng dạy trực tiếp tại THCS Võ Trường Toản (TP.HCM).
-- Thành tích nổi bật: 9 năm liên tiếp bồi dưỡng học sinh giỏi Toán cấp Thành phố. Là chuyên gia bồi dưỡng kỹ năng giải toán trắc nghiệm nhanh bằng máy tính cầm tay Casio.
-- Triết lý giáo dục: Sáng lập phương pháp "Navigate Yourself" (Tự định hướng) - Tuyệt đối không dạy học vẹt, tập trung rèn luyện tư duy logic để học sinh tự giải quyết vấn đề, yêu thích môn Toán và giảm áp lực học tập.
+THÔNG TIN THẦY NAM & TRƯỜNG LỚP:
+- Nơi công tác: Trường THCS Võ Trường Toản (Địa chỉ: Số 11 Nguyễn Bỉnh Khiêm, Phường Sài Gòn, Thành phố Hồ Chí Minh).
+- Học vấn: Thạc sĩ Toán học, Cử nhân Sư phạm xuất sắc. 11 năm kinh nghiệm, 9 năm luyện thi HSG.
+- Phương pháp dạy: "Navigate Yourself" (Tự định hướng). Sĩ số tối đa: 15 HS/lớp.
 
-CHƯƠNG TRÌNH HỌC (Sách Kết nối tri thức) & MÔI TRƯỜNG:
-- Lớp 6: Số tự nhiên, Phân số, Số thập phân, Hình học trực quan, Khối không gian, Tính đối xứng.
-- Lớp 7: Số hữu tỉ, Số thực, Góc & Đường thẳng song song, Tam giác bằng nhau, Đại lượng tỉ lệ.
-- Lớp 8: Đa thức, Hằng đẳng thức, Tứ giác, Định lí Thalès, Tam giác đồng dạng.
-- Sĩ số lớp học: Giới hạn tối đa 15 học sinh/lớp để Thầy Nam trực tiếp theo sát, kèm cặp và định hướng tư duy cá nhân hóa.
+CHƯƠNG TRÌNH & HỌC PHÍ (1.000.000 VNĐ/tháng):
+- Lớp 6 (T3 & T5, 18h45 - 20h15): Số học, Hình trực quan.
+- Lớp 7 (T2 & T4, 17h00 - 18h30): Số hữu tỉ, Tam giác.
+- Lớp 8 (T3 & T5, 17h00 - 18h30): Đại số, Tứ giác, Định lý Thalès.
+- Lớp 9 (T2 & T4, 18h45 - 20h15): Ôn thi TS10 TP.HCM. Trọng tâm giải Toán thực tế, Vi-et, Đồ thị, Hình phẳng.
 
-ĐẶC BIỆT KHỐI 9 (TRỌNG TÂM ÔN THI TS10 TẠI TP.HCM):
-- Đề thi Toán Tuyển sinh 10 tại TP.HCM rất đặc thù. Trọng tâm cực kỳ lớn (chiếm 4.5/10 điểm) rơi vào các bài TOÁN THỰC TẾ đòi hỏi đọc hiểu dài, lập phương trình, lãi suất. Kèm theo Vi-et, Đồ thị, Hình phẳng.
-- Lộ trình: Rèn luyện phương pháp "Navigate Yourself" giúp học sinh tự phân tích đề dài, bóc tách dữ liệu để mô hình hóa bài toán thực tế mà không bị tâm lý e ngại.
-
-THÔNG TIN LỊCH HỌC & HỌC PHÍ:
-- Học phí chung các khối: 1.000.000 VNĐ/tháng.
-- Lớp 6: Thứ 3 & Thứ 5 (18h45 - 20h15)
-- Lớp 7: Thứ 2 & Thứ 4 (17h00 - 18h30)
-- Lớp 8: Thứ 3 & Thứ 5 (17h00 - 18h30)
-- Lớp 9: Thứ 2 & Thứ 4 (18h45 - 20h15)
-
-KỸ NĂNG DẪN DẮT: 
-- Luôn trả lời tự tin, nhiệt tình. Nêu bật kinh nghiệm của Thầy Nam khi phụ huynh tỏ ra băn khoăn về chất lượng giảng dạy.
-- Khéo léo mời phụ huynh liên hệ Zalo 0356015268 để Thầy Nam trực tiếp kiểm tra năng lực đầu vào và xếp lớp.
+LIÊN HỆ: 
+- Nhanh chóng đưa ra lời mời phụ huynh kết bạn Zalo 0356015268 để Thầy Nam xếp lớp.
 """
 
 # ==========================================
-# 4. GIAO DIỆN CHAT VÀ NÚT TÒ MÒ ĐỘNG
+# 4. GIAO DIỆN CHAT 
 # ==========================================
 if "messages" not in st.session_state:
-    loi_chao = (
-        "Kính chào Quý phụ huynh! 👋 Tôi là trợ lý AI của hệ thống Toán NaYoB.\n\n"
-        "Anh/chị đang quan tâm lịch học, học phí hay muốn tìm hiểu về phương pháp giảng dạy của Thầy Nam ạ?"
-    )
-    st.session_state.messages = [{"role": "assistant", "content": loi_chao}]
+    st.session_state.messages = [{"role": "assistant", "content": "Kính chào Quý phụ huynh! 👋 Tôi là trợ lý của Thầy Đinh Quốc Nam. Anh/chị cần tư vấn lịch học, học phí hay thông tin gì ạ?"}]
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# --- BỘ QUÉT NGỮ CẢNH: CHỌN NÚT GỢI Ý ĐỘNG ---
+# --- BỘ QUÉT NGỮ CẢNH ---
 recent_context = " ".join([m["content"].lower() for m in st.session_state.messages[-2:]])
 
 goi_y = []
-if "thầy nam" in recent_context or "giáo viên" in recent_context or "kinh nghiệm" in recent_context or "dạy" in recent_context:
-    goi_y = ["Thành tích & Kinh nghiệm của Thầy Nam?", "Phương pháp Navigate Yourself là gì?", "Sĩ số lớp học bao nhiêu?"]
-elif "lớp 6" in recent_context:
-    goi_y = ["Chương trình Toán 6 học gì?", "Lịch học & Học phí lớp 6", "Phương pháp dạy Thầy Nam"]
-elif "lớp 7" in recent_context:
-    goi_y = ["Trọng tâm kiến thức Lớp 7", "Sĩ số lớp 7", "Lịch học & Học phí"]
-elif "lớp 8" in recent_context:
-    goi_y = ["Hình học lớp 8 khó không?", "Lịch học & Học phí lớp 8", "Thầy Nam dạy có dễ hiểu không?"]
-elif "lớp 9" in recent_context or "tuyển sinh" in recent_context or "ts 10" in recent_context:
-    goi_y = ["Cấu trúc Toán TS10 TP.HCM", "Lộ trình ôn thi Lớp 9", "Kinh nghiệm luyện HSG của Thầy Nam"]
+if "lớp 6" in recent_context:
+    goi_y = ["Sĩ số lớp 6?", "Lịch & Học phí lớp 6", "Phương pháp dạy của Thầy"]
+elif "lớp 9" in recent_context or "ts 10" in recent_context:
+    goi_y = ["Đề TS10 khó chỗ nào?", "Lịch ôn Lớp 9", "Kinh nghiệm của Thầy Nam"]
+elif "thầy nam" in recent_context or "trường" in recent_context or "phường" in recent_context or "sài gòn" in recent_context:
+    goi_y = ["Thầy Nam dạy trường nào?", "Thành tích của Thầy?", "Địa chỉ THCS Võ Trường Toản"]
 else:
-    goi_y = ["Kinh nghiệm giảng dạy của Thầy Nam?", "Tư vấn chương trình Lớp 9 Ôn TS10", "Sĩ số và Lịch học các khối?"]
+    goi_y = ["Thầy Nam công tác trường nào?", "Lịch học Lớp 9", "Học phí và sĩ số lớp?"]
 
-# --- HIỂN THỊ NÚT GỢI Ý ---
-st.markdown("<div style='text-align: center; margin-bottom: 5px; margin-top: 10px; color: #64748b; font-size: 14px;'>💡 <i>Gợi ý cho Quý phụ huynh:</i></div>", unsafe_allow_html=True)
+# --- HIỂN THỊ NÚT ---
+st.markdown("<div style='text-align: center; margin-bottom: 5px; margin-top: 10px; color: #64748b; font-size: 13px;'>💡 <i>Gợi ý câu hỏi:</i></div>", unsafe_allow_html=True)
 cols = st.columns(3)
 for i, cau_hoi in enumerate(goi_y):
     with cols[i]:
         if st.button(cau_hoi, use_container_width=True):
             st.session_state.quick_prompt = cau_hoi
 
-# --- KHUNG NHẬP CHAT ---
-prompt = st.chat_input("Nhập câu hỏi của Quý phụ huynh tại đây...")
+prompt = st.chat_input("Nhập câu hỏi tại đây...")
 
 if "quick_prompt" in st.session_state and st.session_state.quick_prompt:
     prompt = st.session_state.quick_prompt
@@ -116,21 +95,27 @@ if prompt:
         message_placeholder.markdown("*(Đang suy nghĩ...)*")
         
         try:
-            history_text = ""
-            for msg in st.session_state.messages[-4:-1]:
-                nguoi_gui = "Phụ huynh" if msg["role"] == "user" else "Trợ lý"
-                history_text += f"{nguoi_gui}: {msg['content']}\n"
-
-            full_prompt = f"""
-            Lịch sử trò chuyện gần đây:
-            {history_text}
+            # KỸ THUẬT MỚI: Truyền lịch sử hội thoại chuẩn form Gemini qua Apps Script
+            contents_payload = []
             
-            Câu hỏi mới của phụ huynh: {prompt}
-            """
+            # Bỏ qua câu chào mặc định đầu tiên để tránh lỗi định dạng
+            for msg in st.session_state.messages[1:-1]:
+                role = "user" if msg["role"] == "user" else "model"
+                contents_payload.append({
+                    "role": role,
+                    "parts": [{"text": msg["content"]}]
+                })
             
+            # Đưa câu hỏi mới nhất vào
+            contents_payload.append({
+                "role": "user",
+                "parts": [{"text": prompt}]
+            })
+            
+            # Đóng gói dữ liệu gửi đi (AI sẽ tự đọc hiểu toàn bộ mảng nội dung này)
             payload = {
                 "action": "solve",
-                "contents": [{"parts": [{"text": full_prompt}]}],
+                "contents": contents_payload,
                 "systemInstruction": {"parts": [{"text": KNOWLEDGE_BASE}]}
             }
             
@@ -146,7 +131,7 @@ if prompt:
                 bot_reply = data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
                 
                 if not bot_reply:
-                    bot_reply = "Xin lỗi, hiện tại hệ thống chưa xử lý kịp câu hỏi này."
+                    bot_reply = "Xin lỗi, hiện tại hệ thống bận."
                     
                 message_placeholder.markdown(bot_reply)
                 st.session_state.messages.append({"role": "assistant", "content": bot_reply})
@@ -155,7 +140,7 @@ if prompt:
                 st.error("Lỗi đường truyền trung gian.")
                 
         except Exception as e:
-            st.error(f"Lỗi hệ thống.")
+            st.error(f"Lỗi hệ thống: {e}")
             message_placeholder.markdown("Hệ thống đang bận. Quý phụ huynh vui lòng liên hệ Zalo 0356015268 ạ.")
 
 # ==========================================
