@@ -5,7 +5,6 @@ import streamlit as st
 # ==========================================
 st.set_page_config(page_title="Đăng ký Ghi danh - NaYoB", page_icon="📝", layout="centered")
 
-# Custom CSS đồng bộ giao diện
 st.markdown("""
     <style>
     .title-text { color: #005088; font-family: 'Merriweather', serif; font-size: 36px; font-weight: bold; text-align: center; margin-bottom: 5px; }
@@ -20,27 +19,19 @@ st.markdown('<div class="subtitle-text">Hệ sinh thái Toán học NaYoB — Th
 st.markdown('<div class="instruction-text">Quý phụ huynh vui lòng điền đầy đủ thông tin vào biểu mẫu dưới đây. Thầy Nam sẽ liên hệ lại qua Zalo/Điện thoại để xác nhận và thông báo địa điểm học chi tiết.</div>', unsafe_allow_html=True)
 
 # ==========================================
-# 2. NHÚNG GOOGLE FORM
+# 2. NHÚNG GOOGLE FORM BẰNG HTML GỐC (CHỐNG LỖI 100%)
 # ==========================================
-GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScXAAXLN-FXWc9n4888GLyMhqHp8TUMNhUGjkiG8AM1VnhUjw/viewform?usp=header"
+# Nhúng Form trực tiếp bằng iframe HTML thay vì dùng thư viện Streamlit
+st.markdown("""
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScXAAXLN-FXWc9n4888GLyMhqHp8TUMNhUGjkiG8AM1VnhUjw/viewform?embedded=true" 
+    width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe>
+""", unsafe_allow_html=True)
 
-# Tự động thêm tham số embedded=true để form hiển thị đẹp hơn
-if "?embedded=true" not in GOOGLE_FORM_URL and "&embedded=true" not in GOOGLE_FORM_URL:
-    if "?" in GOOGLE_FORM_URL:
-        GOOGLE_FORM_URL += "&embedded=true"
-    else:
-        GOOGLE_FORM_URL += "?embedded=true"
-
-# Đã thay thế thành st.iframe theo chuẩn mới nhất của Streamlit
-st.iframe(GOOGLE_FORM_URL, width=700, height=800, scrolling=True)
-
-# Nút dự phòng trong trường hợp trình duyệt điện thoại của phụ huynh chặn iFrame
+# Nút dự phòng
 st.markdown("---")
 st.markdown("<div style='text-align: center; color: #64748b; font-size: 14px;'>Nếu biểu mẫu phía trên không tải được, Quý phụ huynh vui lòng bấm vào nút dưới đây:</div>", unsafe_allow_html=True)
 
-# Loại bỏ đuôi embedded khi mở ở cửa sổ mới
-clean_url = GOOGLE_FORM_URL.replace('&embedded=true', '').replace('?embedded=true', '')
-
+clean_url = "https://docs.google.com/forms/d/e/1FAIpQLScXAAXLN-FXWc9n4888GLyMhqHp8TUMNhUGjkiG8AM1VnhUjw/viewform"
 st.markdown(f"""
     <div style="text-align: center; margin-top: 15px;">
         <a href="{clean_url}" target="_blank" 
@@ -50,7 +41,4 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 3. FOOTER
-# ==========================================
 st.markdown('<div class="footer">Made by NamY</div>', unsafe_allow_html=True)
